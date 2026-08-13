@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,14 +10,20 @@ public class PlayerMovement : MonoBehaviour
     [Header("lane movement")]
     [SerializeField] private float laneDistance = 3f;
     [SerializeField] private float laneChangeSpeed = 10f;
+
+    [Header("jump")]
+    [SerializeField] private float gravity = -20f;
     //private float previousInputX = 0f;
 
     private int currentLane = 0;
     private RunnerInput input;
+    private CharacterController controller;
+    private float verticalVelocity;
 
     private void Awake()
     {
         input = new RunnerInput();
+        controller = GetComponent<CharacterController>();
     }
 
     private void OnEnable()
@@ -40,15 +47,33 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        MoveForward();
         HandleLaneInput();
-        MoveToLane();
+        ApplyGravity();
+        MovePlayer();
 
     }
 
-    private void MoveForward()
+    private void MovePlayer()
     {
-        transform.position += Vector3.forward * forwardSpeed * Time.deltaTime;
+        float targetX = currentLane * laneDistance;
+
+        float newX = Mathf.Lerp(
+            transform.position.x,
+            targetX,
+            laneChangeSpeed * Time.deltaTime
+        );
+
+        float horizontalMovement = newX - transform.position.x;
+
+        float forwardMovement = forwardSpeed * Time.deltaTime;
+
+        Vector3 movement = new Vector3(
+            horizontalMovement,
+            verticalVelocity * Time.deltaTime,
+            forwardMovement
+        );
+
+        controller.Move(movement);
     }
 
     private void HandleLaneInput()
@@ -67,27 +92,18 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Rigt");
         }
     }
-
     private void ChangeLane(int direction)
     {
         currentLane += direction;
         currentLane = Mathf.Clamp(currentLane, -1, 1);
     }
-
-    private void MoveToLane()
+    private void ApplyGravity()
     {
-        float targetX = currentLane * laneDistance;
+        if(controller.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
 
-        float newX = Mathf.Lerp(
-            transform.position.x,
-            targetX,
-            laneChangeSpeed * Time.deltaTime
-        );
-
-        transform.position = new Vector3(
-            newX,
-            transform.position.y,
-            transform.position.z
-        );
+        verticalVelocity += gravity * Time.deltaTime;
     }
 }
