@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -42,7 +43,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (isGameOver) {
+        HandleRestart();
+        if (isGameOver)
+        {
             return;
         }
         HandleLaneInput();
@@ -117,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            GameOver(); 
+            GameOver();
         }
     }
 
@@ -125,5 +128,13 @@ public class PlayerMovement : MonoBehaviour
     {
         isGameOver = true;
         Debug.Log("GAME OVER!!");
+    }
+
+    private void HandleRestart()
+    {
+        if (isGameOver && input.Player.Restart.WasPressedThisFrame())
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
