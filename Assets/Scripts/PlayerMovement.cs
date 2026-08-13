@@ -57,12 +57,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (input.Player.MoveLeft.WasPressedThisFrame())
         {
+            Debug.Log("left");
             ChangeLane(-1);
         }
 
         if (input.Player.MoveRight.WasPressedThisFrame())
         {
             ChangeLane(1);
+            Debug.Log("Rigt");
         }
     }
 
