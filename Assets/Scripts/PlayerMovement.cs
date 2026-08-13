@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private RunnerInput input;
     private CharacterController controller;
     private float verticalVelocity;
+    private bool isGameOver;
 
     private void Awake()
     {
@@ -37,16 +38,13 @@ public class PlayerMovement : MonoBehaviour
         input.Disable();
     }
 
+    void Start() { }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
+        if (isGameOver) {
+            return;
+        }
         HandleLaneInput();
         HandleJump();
         ApplyGravity();
@@ -113,5 +111,19 @@ public class PlayerMovement : MonoBehaviour
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacle"))
+        {
+            GameOver(); 
+        }
+    }
+
+    private void GameOver()
+    {
+        isGameOver = true;
+        Debug.Log("GAME OVER!!");
     }
 }
