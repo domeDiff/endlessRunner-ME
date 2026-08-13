@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("jump")]
     [SerializeField] private float gravity = -20f;
+    [SerializeField] private float jumpHeight = 2f;
     //private float previousInputX = 0f;
 
     private int currentLane = 0;
@@ -46,11 +47,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         HandleLaneInput();
+        HandleJump();
         ApplyGravity();
         MovePlayer();
-
     }
 
     private void MovePlayer()
@@ -99,11 +99,19 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ApplyGravity()
     {
-        if(controller.isGrounded && verticalVelocity < 0)
+        if (controller.isGrounded && verticalVelocity < 0)
         {
             verticalVelocity = -2f;
         }
 
         verticalVelocity += gravity * Time.deltaTime;
+    }
+
+    private void HandleJump()
+    {
+        if (input.Player.Jump.WasPressedThisFrame() && controller.isGrounded)
+        {
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
     }
 }
