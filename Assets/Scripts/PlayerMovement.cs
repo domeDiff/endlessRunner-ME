@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,14 +10,21 @@ public class PlayerMovement : MonoBehaviour
     [Header("lane movement")]
     [SerializeField] private float laneDistance = 3f;
     [SerializeField] private float laneChangeSpeed = 10f;
+
+    [Header("jump")]
+    [SerializeField] private float gravity = -20f;
+    [SerializeField] private float jumpHeight = 2f;
     //private float previousInputX = 0f;
 
     private int currentLane = 0;
     private RunnerInput input;
+    private CharacterController controller;
+    private float verticalVelocity;
 
     private void Awake()
     {
         input = new RunnerInput();
+        controller = GetComponent<CharacterController>();
     }
 
     private void OnEnable()
@@ -39,40 +47,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        MoveForward();
         HandleLaneInput();
-        MoveToLane();
-
+        HandleJump();
+        ApplyGravity();
+        MovePlayer();
     }
 
-    private void MoveForward()
-    {
-        transform.position += Vector3.forward * forwardSpeed * Time.deltaTime;
-    }
-
-    private void HandleLaneInput()
-    {
-        //Vector2 moveInput = input.Player.Move.ReadValue<Vector2>();
-
-        if (input.Player.MoveLeft.WasPressedThisFrame())
-        {
-            ChangeLane(-1);
-        }
-
-        if (input.Player.MoveRight.WasPressedThisFrame())
-        {
-            ChangeLane(1);
-        }
-    }
-
-    private void ChangeLane(int direction)
-    {
-        currentLane += direction;
-        currentLane = Mathf.Clamp(currentLane, -1, 1);
-    }
-
-    private void MoveToLane()
+    private void MovePlayer()
     {
         float targetX = currentLane * laneDistance;
 
@@ -82,10 +63,55 @@ public class PlayerMovement : MonoBehaviour
             laneChangeSpeed * Time.deltaTime
         );
 
-        transform.position = new Vector3(
-            newX,
-            transform.position.y,
-            transform.position.z
+        float horizontalMovement = newX - transform.position.x;
+
+        float forwardMovement = forwardSpeed * Time.deltaTime;
+
+        Vector3 movement = new Vector3(
+            horizontalMovement,
+            verticalVelocity * Time.deltaTime,
+            forwardMovement
         );
+
+        controller.Move(movement);
+    }
+
+    private void HandleLaneInput()
+    {
+        //Vector2 moveInput = input.Player.Move.ReadValue<Vector2>();
+
+        if (input.Player.MoveLeft.WasPressedThisFrame())
+        {
+            Debug.Log("left");
+            ChangeLane(-1);
+        }
+
+        if (input.Player.MoveRight.WasPressedThisFrame())
+        {
+            ChangeLane(1);
+            Debug.Log("Rigt");
+        }
+    }
+    private void ChangeLane(int direction)
+    {
+        currentLane += direction;
+        currentLane = Mathf.Clamp(currentLane, -1, 1);
+    }
+    private void ApplyGravity()
+    {
+        if (controller.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
+
+        verticalVelocity += gravity * Time.deltaTime;
+    }
+
+    private void HandleJump()
+    {
+        if (input.Player.Jump.WasPressedThisFrame() && controller.isGrounded)
+        {
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
     }
 }
