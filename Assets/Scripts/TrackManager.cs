@@ -45,6 +45,8 @@ public class TrackManager : MonoBehaviour
             newZ += segmentLength;
 
             furthest.position = new Vector3(furthest.position.x, furthest.position.y,newZ);
+
+            furthest.GetComponent<TrackSegment>().RandomizeObstacleLane();  
         }
     }
 }
