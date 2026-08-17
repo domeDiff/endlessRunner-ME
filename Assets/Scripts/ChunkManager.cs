@@ -5,6 +5,9 @@ public class ChunkManager : MonoBehaviour
     [Header("Chunks")]
     [SerializeField] private Transform[] chunks;
 
+    [Header("Chunk Prefabs")]
+    [SerializeField] private Transform[] chunkPrefabs;
+
     [Header("Player")]
     [SerializeField] private Transform player;
 
@@ -63,5 +66,14 @@ public class ChunkManager : MonoBehaviour
 
             furthestBehind.position = new Vector3(furthestBehind.position.x, furthestAhead.position.y, newZ);
         }
+
+        ChangeChunkPattern(furthestBehind);
+    }
+
+    private void ChangeChunkPattern(Transform chunk)
+    {
+        int randomIndex = Random.Range(0, chunkPrefabs.Length);
+
+        Debug.Log("selected chunk patter: " + chunkPrefabs[randomIndex].name);
     }
 }
