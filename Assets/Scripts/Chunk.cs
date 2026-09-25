@@ -1,49 +1,51 @@
-using System;
 using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
     [SerializeField] private Transform obstacle;
-    [SerializeField] float laneDistance = 3f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    [SerializeField] private float laneDistance = 3f;
 
     public void SetPattern(ChunkPattern pattern)
     {
+        if (obstacle == null)
+        {
+            Debug.LogError("OBSTACLE IS NULL on " + gameObject.name);
+            return;
+        }
+
+        // Hide on straight
         if (pattern == ChunkPattern.Straight)
         {
             obstacle.gameObject.SetActive(false);
             return;
         }
+
         obstacle.gameObject.SetActive(true);
 
-        float xPosition = 0f;
+        // RANDOM lane
+        int lane = Random.Range(0, 3);
 
-        switch (pattern)
-        {
-            case ChunkPattern.LeftObstacle:
-                xPosition = -0.3333f;
-                break;
-            case ChunkPattern.CenterObstacle:
-                xPosition = 0f;
-                break;
-            case ChunkPattern.RightObstacle:
-                xPosition = 0.3333f;
-                break;
-        }
-        Vector3 position = obstacle.localPosition;
+        float x;
 
-        position.x = xPosition;
+        if (lane == 0)
+            x = -laneDistance;
+        else if (lane == 1)
+            x = 0f;
+        else
+            x = laneDistance;
 
-        obstacle.localPosition = position;
+        // IMPORTANT: directly set local position
+        obstacle.localPosition = new Vector3(
+            x,
+            obstacle.localPosition.y,
+            obstacle.localPosition.z
+        );
+
+        Debug.Log(
+            "CHUNK: " + gameObject.name +
+            " | PATTERN: " + pattern +
+            " | RANDOM LANE: " + lane +
+            " | OBSTACLE X: " + obstacle.localPosition.x
+        );
     }
 }
