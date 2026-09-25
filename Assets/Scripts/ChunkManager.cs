@@ -1,12 +1,11 @@
-using UnityEngine; 
+using UnityEngine;
 
 public enum ChunkPattern
 {
     Straight,
     LeftObstacle,
-    RightObstacle, 
-    CenterObstacle,
-
+    RightObstacle,
+    CenterObstacle
 }
 
 public class ChunkManager : MonoBehaviour
@@ -14,38 +13,43 @@ public class ChunkManager : MonoBehaviour
     [Header("Chunks")]
     [SerializeField] private Transform[] chunks;
 
-    //[Header("Chunk Prefabs")]
-    //[SerializeField] private Transform[] chunkPrefabs;
-
     [Header("Player")]
     [SerializeField] private Transform player;
 
     [Header("Settings")]
     [SerializeField] private float chunkLength = 20f;
     [SerializeField] private float recycleDistance = 20f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Start()
     {
         GenerateInitialChunks();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         RecycleChunks();
     }
 
+    // --------------------------------------------------
+    // INITIAL CHUNKS
+    // --------------------------------------------------
+
     private void GenerateInitialChunks()
     {
-        Debug.Log("========== INITIAL CHUNK GENERATION ==========");
+        Debug.Log("===== GENERATING INITIAL CHUNKS =====");
 
         foreach (Transform chunk in chunks)
         {
             ChangeChunkPattern(chunk);
         }
 
-        Debug.Log("========== INITIAL GENERATION COMPLETE ==========");
+        Debug.Log("===== INITIAL CHUNKS GENERATED =====");
     }
+
+    // --------------------------------------------------
+    // FIND FURTHEST BEHIND CHUNK
+    // --------------------------------------------------
+
     private Transform GetFurthestBehindChunk()
     {
         Transform furthest = chunks[0];
@@ -53,11 +57,18 @@ public class ChunkManager : MonoBehaviour
         foreach (Transform chunk in chunks)
         {
             if (chunk.position.z < furthest.position.z)
+            {
                 furthest = chunk;
+            }
         }
 
         return furthest;
     }
+
+    // --------------------------------------------------
+    // FIND FURTHEST AHEAD CHUNK
+    // --------------------------------------------------
+
     private Transform GetFurthestAheadChunk()
     {
         Transform furthest = chunks[0];
@@ -68,78 +79,88 @@ public class ChunkManager : MonoBehaviour
             {
                 furthest = chunk;
             }
-
         }
 
         return furthest;
     }
 
+    // --------------------------------------------------
+    // RECYCLE CHUNKS
+    // --------------------------------------------------
+
     private void RecycleChunks()
     {
+        if (player == null || chunks.Length == 0)
+        {
+            return;
+        }
+
         Transform furthestBehind = GetFurthestBehindChunk();
 
-        float distance = player.position.z - furthestBehind.position.z;
-
-        Debug.Log(
-            "Player Z: " + player.position.z +
-            " | Behind Chunk: " + furthestBehind.name +
-            " | Chunk Z: " + furthestBehind.position.z +
-            " | Distance: " + distance
-        );
+        float distance =
+            player.position.z - furthestBehind.position.z;
 
         if (distance > recycleDistance)
         {
             Transform furthestAhead = GetFurthestAheadChunk();
 
-            float newZ = furthestAhead.position.z + chunkLength;
+            float newZ =
+                furthestAhead.position.z + chunkLength;
 
-            Debug.Log(
-                "RECYCLING: " + furthestBehind.name +
-                " from Z " + furthestBehind.position.z +
-                " to Z " + newZ
-            );
-
+            // Move chunk forward
             furthestBehind.position = new Vector3(
                 furthestBehind.position.x,
                 furthestBehind.position.y,
                 newZ
             );
 
+            // Give it a NEW random pattern
             ChangeChunkPattern(furthestBehind);
+
+            Debug.Log(
+                "Recycled " +
+                furthestBehind.name +
+                " to Z = " +
+                newZ
+            );
         }
     }
+
+    // --------------------------------------------------
+    // RANDOM PATTERN
+    // --------------------------------------------------
 
     private void ChangeChunkPattern(Transform chunk)
     {
-        ChunkPattern pattern = (ChunkPattern)Random.Range(0, System.Enum.GetValues(typeof(ChunkPattern)).Length);
+        // Pick random pattern
+        ChunkPattern pattern =
+            (ChunkPattern)Random.Range(
+                0,
+                System.Enum.GetValues(typeof(ChunkPattern)).Length
+            );
 
+        // Get Chunk script
+        Chunk chunkScript =
+            chunk.GetComponent<Chunk>();
 
-
-        Chunk chunkScript = chunk.GetComponent<Chunk>();
-
-        if (chunkScript != null)
+        if (chunkScript == null)
         {
-            chunkScript.SetPattern(pattern);
+            Debug.LogError(
+                "Chunk script NOT found on: " +
+                chunk.name
+            );
+
+            return;
         }
 
-        string obstacleStatus;
-
-        if (pattern == ChunkPattern.Straight)
-        {
-            obstacleStatus = "NO OBSTACLE";
-        }
-        else
-        {
-            obstacleStatus = "OBSTACLE";
-        }
+        // Apply random pattern
+        chunkScript.SetPattern(pattern);
 
         Debug.Log(
-            $"[CHUNK SELECTED] " +
-            $"Chunk: {chunk.name} | " +
-            $"Pattern: {pattern} | " +
-            $"Status: {obstacleStatus} | " +
-            $"Z: {chunk.position.z:F1}"
+            "Chunk: " +
+            chunk.name +
+            " | Pattern: " +
+            pattern
         );
     }
-
 }
