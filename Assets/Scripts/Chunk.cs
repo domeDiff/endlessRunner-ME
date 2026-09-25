@@ -5,57 +5,47 @@ public class Chunk : MonoBehaviour
     [SerializeField] private Transform obstacle;
     [SerializeField] private float laneDistance = 3f;
 
-    //public void SetPattern(ChunkPattern pattern)
-    //{
-    //    if (obstacle == null)
-    //    {
-    //        Debug.LogError("Obstacle is not assigned on " + gameObject.name);
-    //        return;
-    //    }
-
-    //    if (pattern == ChunkPattern.Straight)
-    //    {
-    //        obstacle.gameObject.SetActive(false);
-    //        return;
-    //    }
-
-    //    obstacle.gameObject.SetActive(true);
-
-    //    float xPosition = 0f;
-
-    //    switch (pattern)
-    //    {
-    //        case ChunkPattern.LeftObstacle:
-    //            xPosition = -laneDistance;
-    //            break;
-
-    //        case ChunkPattern.CenterObstacle:
-    //            xPosition = 0f;
-    //            break;
-
-    //        case ChunkPattern.RightObstacle:
-    //            xPosition = laneDistance;
-    //            break;
-    //    }
-
-    //    Vector3 position = obstacle.localPosition;
-    //    position.x = xPosition;
-    //    obstacle.localPosition = position;
-    //}
-
     public void SetPattern(ChunkPattern pattern)
     {
         if (obstacle == null)
         {
-            Debug.LogError("NO HUMAN MODEL ASSIGNED TO: " + gameObject.name);
+            Debug.LogError("OBSTACLE IS NULL on " + gameObject.name);
+            return;
+        }
+
+        // Hide on straight
+        if (pattern == ChunkPattern.Straight)
+        {
+            obstacle.gameObject.SetActive(false);
             return;
         }
 
         obstacle.gameObject.SetActive(true);
 
-        Vector3 position = obstacle.localPosition;
-        position.x = 0f;
-        obstacle.localPosition = position;
-    }
+        // RANDOM lane
+        int lane = Random.Range(0, 3);
 
+        float x;
+
+        if (lane == 0)
+            x = -laneDistance;
+        else if (lane == 1)
+            x = 0f;
+        else
+            x = laneDistance;
+
+        // IMPORTANT: directly set local position
+        obstacle.localPosition = new Vector3(
+            x,
+            obstacle.localPosition.y,
+            obstacle.localPosition.z
+        );
+
+        Debug.Log(
+            "CHUNK: " + gameObject.name +
+            " | PATTERN: " + pattern +
+            " | RANDOM LANE: " + lane +
+            " | OBSTACLE X: " + obstacle.localPosition.x
+        );
+    }
 }

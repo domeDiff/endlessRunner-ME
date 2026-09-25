@@ -132,35 +132,17 @@ public class ChunkManager : MonoBehaviour
 
     private void ChangeChunkPattern(Transform chunk)
     {
-        // Pick random pattern
         ChunkPattern pattern =
             (ChunkPattern)Random.Range(
                 0,
                 System.Enum.GetValues(typeof(ChunkPattern)).Length
             );
 
-        // Get Chunk script
-        Chunk chunkScript =
-            chunk.GetComponent<Chunk>();
+        Chunk chunkScript = chunk.GetComponent<Chunk>();
 
-        if (chunkScript == null)
+        if (chunkScript != null)
         {
-            Debug.LogError(
-                "Chunk script NOT found on: " +
-                chunk.name
-            );
-
-            return;
+            chunkScript.SetPattern(pattern);
         }
-
-        // Apply random pattern
-        chunkScript.SetPattern(pattern);
-
-        Debug.Log(
-            "Chunk: " +
-            chunk.name +
-            " | Pattern: " +
-            pattern
-        );
     }
 }

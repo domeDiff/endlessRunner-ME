@@ -136,9 +136,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1620567338439934422}
-  - component: {fileID: 1355136731533582507}
+  - component: {fileID: -3095667828023510750}
   m_Layer: 0
-  m_Name: chunk_centerObstacle_human
+  m_Name: chunk_leftObstacle_human
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,7 +161,7 @@ Transform:
   - {fileID: 8209462836034830608}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1355136731533582507
+--- !u!114 &-3095667828023510750
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,16 +192,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.65
+      value: 2.79
       objectReference: {fileID: 0}
     - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25000054
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.62080383
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_LocalRotation.w
@@ -230,6 +242,10 @@ PrefabInstance:
     - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634962771076449184, guid: c931176be5dcd5247b86da073cd96745, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
