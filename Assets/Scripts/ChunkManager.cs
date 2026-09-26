@@ -133,10 +133,7 @@ public class ChunkManager : MonoBehaviour
     private void ChangeChunkPattern(Transform chunk)
     {
         ChunkPattern pattern =
-            (ChunkPattern)Random.Range(
-                0,
-                System.Enum.GetValues(typeof(ChunkPattern)).Length
-            );
+            (ChunkPattern)Random.Range(0, 3);
 
         Chunk chunkScript = chunk.GetComponent<Chunk>();
 
