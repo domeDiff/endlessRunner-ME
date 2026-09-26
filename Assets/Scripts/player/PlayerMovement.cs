@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private float verticalVelocity;
     private bool isGameOver;
+    [SerializeField] private GameObject panel; 
 
     private int lastMilestone = 0;
 
@@ -133,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isGameOver = true;
         animator.SetBool("isDead", true);
+        panel.SetActive(true);
     }
 
     private void HandleRestart()

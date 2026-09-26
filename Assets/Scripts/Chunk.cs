@@ -22,19 +22,24 @@ public class Chunk : MonoBehaviour
 
         obstacle.gameObject.SetActive(true);
 
-        // RANDOM lane
-        int lane = Random.Range(0, 3);
-
         float x;
 
-        if (lane == 0)
-            x = -laneDistance;
-        else if (lane == 1)
-            x = 0f;
-        else
-            x = laneDistance;
+        switch (pattern)
+        {
+            case ChunkPattern.LeftObstacle:
+                x = -laneDistance;
+                break;
+            case ChunkPattern.RightObstacle:
+                x = laneDistance;
+                break;
+            case ChunkPattern.CenterObstacle:
+                x = 0f;
+                break;
+            default:
+                x = 0f;
+                break;
+        }
 
-        // IMPORTANT: directly set local position
         obstacle.localPosition = new Vector3(
             x,
             obstacle.localPosition.y,
@@ -44,7 +49,6 @@ public class Chunk : MonoBehaviour
         Debug.Log(
             "CHUNK: " + gameObject.name +
             " | PATTERN: " + pattern +
-            " | RANDOM LANE: " + lane +
             " | OBSTACLE X: " + obstacle.localPosition.x
         );
     }
