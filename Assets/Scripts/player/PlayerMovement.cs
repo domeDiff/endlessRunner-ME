@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
-using UnityEngine.Rendering;
+
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
@@ -15,16 +15,21 @@ public class PlayerMovement : MonoBehaviour
     [Header("jump")]
     [SerializeField] private float gravity = -20f;
     [SerializeField] private float jumpHeight = 2f;
-    //private float previousInputX = 0f;
 
+    [SerializeField] private ScoreManager scoreManager;
     private int currentLane = 0;
     private RunnerInput input;
     private CharacterController controller;
     private float verticalVelocity;
     private bool isGameOver;
 
+    private int lastMilestone = 0;
+
+    private Animator animator;
+
     private void Awake()
-    {
+    { 
+        animator = GetComponent<Animator>();
         input = new RunnerInput();
         controller = GetComponent<CharacterController>();
     }
@@ -39,8 +44,6 @@ public class PlayerMovement : MonoBehaviour
         input.Disable();
     }
 
-    void Start() { }
-
     void Update()
     {
         HandleRestart();
@@ -52,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         HandleJump();
         ApplyGravity();
         MovePlayer();
+        IncreaseDiff();
     }
 
     private void MovePlayer()
@@ -120,6 +124,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
+            Debug.Log("GAMER OVER");
             GameOver();
         }
     }
@@ -127,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
     private void GameOver()
     {
         isGameOver = true;
-        Debug.Log("GAME OVER!!");
+        animator.SetBool("isDead", true);
     }
 
     private void HandleRestart()
@@ -135,6 +140,19 @@ public class PlayerMovement : MonoBehaviour
         if (isGameOver && input.Player.Restart.WasPressedThisFrame())
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    private void IncreaseDiff()
+    {
+        {
+            int milestone = (int)(ScoreManager.score / 100) * 100;
+
+            if (milestone > lastMilestone)
+            {
+                lastMilestone = milestone;
+                forwardSpeed += 3f;
+            }
         }
     }
 }

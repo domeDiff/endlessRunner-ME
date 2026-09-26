@@ -4,15 +4,11 @@ public class Obstacle : MonoBehaviour
 {
     internal static Vector3 localPosition;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (other.gameObject.CompareTag("Player"))
+        {
+           // Debug.Log("GAME OVER");
+        }
     }
 }
