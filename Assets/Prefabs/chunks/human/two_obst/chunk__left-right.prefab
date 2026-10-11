@@ -184,6 +184,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1620567338439934422}
     m_Modifications:
+    - target: {fileID: 1788848365957405146, guid: c931176be5dcd5247b86da073cd96745, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: bed13aa38f5597043af678c1fec98fe8, type: 2}
     - target: {fileID: 5005953727306160410, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_Name
       value: HumanF_Model (1)
@@ -266,6 +270,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1620567338439934422}
     m_Modifications:
+    - target: {fileID: 1788848365957405146, guid: c931176be5dcd5247b86da073cd96745, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: bed13aa38f5597043af678c1fec98fe8, type: 2}
     - target: {fileID: 5005953727306160410, guid: c931176be5dcd5247b86da073cd96745, type: 3}
       propertyPath: m_Name
       value: HumanF_Model
