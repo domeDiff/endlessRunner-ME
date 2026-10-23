@@ -861,14 +861,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6781027d1ae964eb6cce8d9f2b15cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkManager
-  chunks:
-  - {fileID: 4697084865732193587}
-  - {fileID: 1620567338439934422, guid: 4da5a4099fa325e4d8d23e77fc0ed540, type: 3}
-  - {fileID: 1620567338439934422, guid: f03bca8b399f2cc49bf4f9c6952a4901, type: 3}
-  - {fileID: 1620567338439934422, guid: 11616df4d67791b43a53cdd6003398b2, type: 3}
+  chunkPrefabs: []
   player: {fileID: 1923996448}
   chunkLength: 20
   recycleDistance: 20
+  activeChunks: 4
+  startZ: 0
+  xPosition: 0
+  yPosition: 0
 --- !u!4 &461316544
 Transform:
   m_ObjectHideFlags: 0
@@ -1408,7 +1408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1029791167
 Transform:
   m_ObjectHideFlags: 0
@@ -1692,14 +1692,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6781027d1ae964eb6cce8d9f2b15cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkManager
-  chunks:
-  - {fileID: 1194607432}
-  - {fileID: 1784814007}
-  - {fileID: 1022103018}
-  - {fileID: 571254657}
+  chunkPrefabs:
+  - {fileID: 8037174408493436975, guid: 482a54650f02ca44fb2aad46cfb8fe03, type: 3}
+  - {fileID: 8037174408493436975, guid: 4da5a4099fa325e4d8d23e77fc0ed540, type: 3}
+  - {fileID: 8037174408493436975, guid: f03bca8b399f2cc49bf4f9c6952a4901, type: 3}
+  - {fileID: 8037174408493436975, guid: 11616df4d67791b43a53cdd6003398b2, type: 3}
   player: {fileID: 1923996448}
   chunkLength: 20
   recycleDistance: 20
+  activeChunks: 3
+  startZ: 4
+  xPosition: 0
+  yPosition: 0
 --- !u!1 &1390266962
 GameObject:
   m_ObjectHideFlags: 0
