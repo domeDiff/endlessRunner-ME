@@ -1,6 +1,6 @@
 
 using UnityEngine;
-
+using UnityEngine.InputSystem; 
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
@@ -16,6 +16,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -20f;
     [SerializeField] private float jumpHeight = 2f;
 
+    [Header("Swipe Controls")]
+    [SerializeField] private float swipeThresholdPercent = 0.05f;
+    private Vector2 swipeStart;
+    private bool isSwiping;
+    private bool swipeJump;
     [SerializeField] private ScoreManager scoreManager;
     private int currentLane = 0;
     private RunnerInput input;
@@ -52,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+        HandleSwipeInput();
         HandleLaneInput();
         HandleJump();
         ApplyGravity();
@@ -115,12 +121,51 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleJump()
     {
-        if (input.Player.Jump.WasPressedThisFrame() && controller.isGrounded)
+        bool jumpPressed = input.Player.Jump.WasPressedThisFrame() || swipeJump;
+        swipeJump = false;
+
+        if (jumpPressed && controller.isGrounded)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
+    
+    private void HandleSwipeInput()
+    {
+        Pointer pointer = Pointer.current;
+        if (pointer == null) return;
 
+        if (pointer.press.wasPressedThisFrame)
+        {
+            swipeStart = pointer.position.ReadValue();
+            isSwiping = true;
+            return;
+        }
+
+        if (!isSwiping) return;
+
+        if (pointer.press.wasReleasedThisFrame)
+        {
+            isSwiping = false;
+            return;
+        }
+
+        Vector2 delta = pointer.position.ReadValue() - swipeStart;
+        float thrshold = Screen.height * swipeThresholdPercent;
+
+        if (delta.magnitude < thrshold) return;
+
+        if(Mathf.Abs(delta.x) > Mathf.Abs(delta.y)){
+            ChangeLane(delta.x > 0 ? 1 : -1);
+        }
+
+        else if (delta.y> 0)
+        {
+            swipeJump = true;
+        }
+
+        isSwiping = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle"))
