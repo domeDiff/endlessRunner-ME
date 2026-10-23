@@ -26,7 +26,7 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/game.unity
     m_guid: bd0ebc38d5013854eaf230c078cdc284
-  m_HasScriptingDefines: 0
+  m_HasScriptingDefines: 1
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings:
@@ -177,7 +177,7 @@ MonoBehaviour:
     - line: '|   loadStoreDebugModeEnabled: 0'
     - line: '|   visionOSBundleVersion: 1.0'
     - line: '|   tvOSBundleVersion: 1.0'
-    - line: '|   bundleVersion: 0.1.0'
+    - line: '|   bundleVersion: 0.2.0'
     - line: '|   preloadedAssets: []'
     - line: '|   metroInputSource: 0'
     - line: '|   wsaTransparentSwapchain: 0'
@@ -328,7 +328,15 @@ MonoBehaviour:
     - line: '|   AndroidAppBundleSizeToValidate: 150'
     - line: '|   AndroidReportGooglePlayAppDependencies: 1'
     - line: '|   androidSymbolsSizeThreshold: 800'
-    - line: '|   m_BuildTargetIcons: []'
+    - line: '|   m_BuildTargetIcons:'
+    - line: '|   - m_BuildTarget: '
+    - line: '|     m_Icons:'
+    - line: '|     - serializedVersion: 2'
+    - line: '|       m_Icon: {fileID: 2800000, guid: 5e8c3918c22e72a46af72ffaa130108c,
+        type: 3}'
+    - line: '|       m_Width: 128'
+    - line: '|       m_Height: 128'
+    - line: '|       m_Kind: 0'
     - line: '|   m_BuildTargetPlatformIcons:'
     - line: '|   - m_BuildTarget: iPhone'
     - line: '|     m_Icons:'
@@ -837,7 +845,7 @@ MonoBehaviour:
     - line: '|   blurSplashScreenBackground: 1'
     - line: '|   spritePackerPolicy: '
     - line: '|   webGLMemorySize: 32'
-    - line: '|   webGLExceptionSupport: 0'
+    - line: '|   webGLExceptionSupport: 1'
     - line: '|   webGLNameFilesAsHashes: 0'
     - line: '|   webGLShowDiagnostics: 0'
     - line: '|   webGLDataCaching: 1'
@@ -847,7 +855,7 @@ MonoBehaviour:
     - line: '|   webGLTemplate: APPLICATION:PWA'
     - line: '|   webGLAnalyzeBuildSize: 0'
     - line: '|   webGLUseEmbeddedResources: 0'
-    - line: '|   webGLCompressionFormat: 2'
+    - line: '|   webGLCompressionFormat: 0'
     - line: '|   webGLWasmArithmeticExceptions: 0'
     - line: '|   webGLLinkerTarget: 1'
     - line: '|   webGLThreadsSupport: 0'
@@ -1022,7 +1030,7 @@ MonoBehaviour:
         m_InsightsSettingsContainer:
           m_BuildProfileEngineDiagnosticsState: 2
         m_AdaptivePerformanceEnabled: 0
-        m_CodeOptimization: 3
+        m_CodeOptimization: 1
         m_WebGLClientBrowserPath: 
         m_WebGLClientBrowserType: 0
         m_WebGLTextureSubtarget: 1
