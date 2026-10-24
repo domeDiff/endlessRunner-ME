@@ -197,6 +197,9 @@ public class PlayerMovement : MonoBehaviour
 
             if (milestone > lastMilestone)
             {
+                if (forwardSpeed > 45)
+                    return;
+
                 lastMilestone = milestone;
                 forwardSpeed += 3f;
             }
